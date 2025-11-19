@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: girl-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: girl-service
+  template:
+    metadata:
+      labels:
+        app: girl-service
+    spec:
+      containers:
+      - name: girl-container
+        image: tu_nombre_de_usuario/girl-service:latest
+        env:
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: RABBITMQ_HOST

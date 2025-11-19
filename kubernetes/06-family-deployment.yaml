@@ -1,0 +1,74 @@
+# --- DAD SERVICE ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dad-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dad-service
+  template:
+    metadata:
+      labels:
+        app: dad-service
+    spec:
+      containers:
+      - name: dad-container
+        image: tu_nombre_de_usuario/dad-service:latest
+        env:
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: RABBITMQ_HOST
+---
+# --- MOM SERVICE ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mom-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mom-service
+  template:
+    metadata:
+      labels:
+        app: mom-service
+    spec:
+      containers:
+      - name: mom-container
+        image: tu_nombre_de_usuario/mom-service:latest
+        env:
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: RABBITMQ_HOST
+---
+# --- BIG BROTHER SERVICE ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: brother-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: brother-service
+  template:
+    metadata:
+      labels:
+        app: brother-service
+    spec:
+      containers:
+      - name: brother-container
+        image: tu_nombre_de_usuario/brother-service:latest
+        env:
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: RABBITMQ_HOST

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: suitor-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: suitor-service
+  template:
+    metadata:
+      labels:
+        app: suitor-service
+    spec:
+      containers:
+      - name: suitor-container
+        image: tu_nombre_de_usuario/suitor-service:latest
+        env:
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: RABBITMQ_HOST
+        - name: SUITOR_NAME
+          value: "Guillermo"
